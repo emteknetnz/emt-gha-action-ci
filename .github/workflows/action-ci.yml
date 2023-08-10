@@ -57,7 +57,7 @@ jobs:
   patchrelease:
     name: Patch release
     runs-on: ubuntu-latest
-    needs: gauge-release
+    needs: gaugerelease
     if: ${{ needs.gaugerelease.outputs.do_release == '1' }}
     steps:
       - name: Patch release
