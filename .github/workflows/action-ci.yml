@@ -41,7 +41,7 @@ jobs:
           echo "latest_local_sha=$LATEST_LOCAL_SHA" >> $GITHUB_OUTPUT
 
   gaugerelease:
-    name: Gauge release
+    name: Check unreleased changes
     runs-on: ubuntu-latest
     needs: ci
     outputs:
@@ -61,8 +61,7 @@ jobs:
     if: ${{ needs.gaugerelease.outputs.do_release == '1' }}
     steps:
       - name: Patch release
-        # uses: silverstripe/gha-tag-release@v1
-        uses: emteknetnz/gha-tag-release@1 # note emt, note branch 1, not tag v1
+        uses: silverstripe/gha-tag-release@v1
         with:
           tag: ${{ needs.gaugerelease.outputs.next_tag }}
           delete_existing: false
