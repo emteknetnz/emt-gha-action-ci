@@ -1,5 +1,26 @@
 # GitHub Actions - Action CI
 
-A CI specifically for silverstripe/gha-* repositories
+CI specifically for silverstripe/gha-* repositories
 
-Essentially it's a cut down version of silverstripe/gha-ci
+Will run phpunit if applicable and make automatic path release
+
+Because gha-* modules do not integrate with other dependencies, there's no need to run this CI on a cron
+
+Essentially it's a cut down version of [silverstripe/gha-ci](https://github.com/silverstripe/gha-ci)
+
+## Usage
+
+**.github/workflows/ci.yml**
+```yml
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    name: CI
+    uses: silverstripe/gha-action-ci/.github/workflows/action-ci.yml@v1
+```

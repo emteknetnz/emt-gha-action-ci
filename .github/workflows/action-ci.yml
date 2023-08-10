@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Gauge release
         id: gauge-release
-        uses: emteknetnz/gha-gauge-release@main # @todo change to silverstripe/gha-gauge-release@v1
+        uses: silverstripe/gha-gauge-release@v1
         with:
           latest_local_sha: ${{ needs.ci.outputs.latest_local_sha }}
 
