@@ -8,6 +8,8 @@ jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
+    outputs:
+      latest_local_sha: ${{ steps.output-sha.outputs.latest_local_sha }}
     steps:
 
       - name: Checkout code
@@ -30,6 +32,13 @@ jobs:
           else
             echo "No phpunit tests found"
           fi
+      
+      - name: Output latest SHA
+        id: output-sha
+        run: |
+          LATEST_LOCAL_SHA=$(git rev-parse HEAD)
+          echo "LATEST_LOCAL_SHA is $LATEST_LOCAL_SHA"
+          echo "latest_local_sha=$LATEST_LOCAL_SHA" >> $GITHUB_OUTPUT
 
   gauge-release:
     name: Gauge release
@@ -42,6 +51,8 @@ jobs:
       - name: Gauge release
         id: gauge-release
         uses: emteknetnz/gha-gauge-release@main
+        with:
+          latest_local_sha: ${{ needs.ci.outputs.latest_local_sha }}
 
   patch-release:
     name: Patch release
