@@ -61,7 +61,8 @@ jobs:
     if: ${{ needs.gauge-release.outputs.do_release == '1' }}
     steps:
       - name: Patch release
-        uses: silverstripe/gha-tag-release@v1
+        # uses: silverstripe/gha-tag-release@v1
+        uses: emteknetnz/gha-tag-release@1 # note emt, note branch 1, not tag v1
         with:
           tag: ${{ needs.gauge-release.outputs.next_tag }}
           delete_existing: false
