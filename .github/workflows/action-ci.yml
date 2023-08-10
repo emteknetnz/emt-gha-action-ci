@@ -40,7 +40,7 @@ jobs:
           echo "LATEST_LOCAL_SHA is $LATEST_LOCAL_SHA"
           echo "latest_local_sha=$LATEST_LOCAL_SHA" >> $GITHUB_OUTPUT
 
-  gauge-release:
+  gaugerelease:
     name: Gauge release
     runs-on: ubuntu-latest
     needs: ci
@@ -54,17 +54,17 @@ jobs:
         with:
           latest_local_sha: ${{ needs.ci.outputs.latest_local_sha }}
 
-  patch-release:
+  patchrelease:
     name: Patch release
     runs-on: ubuntu-latest
     needs: gauge-release
-    if: ${{ needs.gauge-release.outputs.do_release == '1' }}
+    if: ${{ needs.gaugerelease.outputs.do_release == '1' }}
     steps:
       - name: Patch release
         # uses: silverstripe/gha-tag-release@v1
         uses: emteknetnz/gha-tag-release@1 # note emt, note branch 1, not tag v1
         with:
-          tag: ${{ needs.gauge-release.outputs.next_tag }}
+          tag: ${{ needs.gaugerelease.outputs.next_tag }}
           delete_existing: false
           release: true
           release_auto_notes: true
