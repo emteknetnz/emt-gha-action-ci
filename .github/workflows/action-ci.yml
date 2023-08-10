@@ -28,7 +28,7 @@ jobs:
             composer install --prefer-dist --no-progress --no-suggest --no-interaction --no-scripts --no-plugins
           fi
           if [[ -f phpunit.xml ]] || [[ -f phpunit.xml.dist ]]; then
-            if [[ -f vendor/bin/phpunit ]] then
+            if [[ -f vendor/bin/phpunit ]]; then
               vendor/bin/phpunit
             else
               wget https://phar.phpunit.de/phpunit-9.6.phar
