@@ -27,8 +27,13 @@ jobs:
           if [[ -f composer.json ]]; then
             composer install --prefer-dist --no-progress --no-suggest --no-interaction --no-scripts --no-plugins
           fi
-          if [[ -f vendor/bin/phpunit ]]; then
-            vendor/bin/phpunit
+          if [[ -f phpunit.xml ]] || [[ -f phpunit.xml.dist ]]; then
+            if [[ -f vendor/bin/phpunit ]] then
+              vendor/bin/phpunit
+            else
+              wget https://phar.phpunit.de/phpunit-9.6.phar
+              php phpunit-9.6.phar --verbose --colors=always
+            fi
           else
             echo "No phpunit tests found"
           fi
@@ -50,7 +55,7 @@ jobs:
     steps:
       - name: Gauge release
         id: gauge-release
-        uses: emteknetnz/gha-gauge-release@main
+        uses: emteknetnz/gha-gauge-release@main # @todo change to silverstripe/gha-gauge-release@v1
         with:
           latest_local_sha: ${{ needs.ci.outputs.latest_local_sha }}
 
@@ -61,8 +66,7 @@ jobs:
     if: ${{ needs.gaugerelease.outputs.do_release == '1' }}
     steps:
       - name: Patch release
-        # uses: silverstripe/gha-tag-release@v1
-        uses: emteknetnz/gha-tag-release@1 # note emt, note branch 1, not tag v1
+        uses: silverstripe/gha-tag-release@v1
         with:
           tag: ${{ needs.gaugerelease.outputs.next_tag }}
           delete_existing: false
